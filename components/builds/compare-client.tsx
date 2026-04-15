@@ -1,7 +1,7 @@
 "use client"
 
-import { startTransition, useState } from "react"
-import { useRouter } from "next/navigation"
+import { startTransition, useMemo } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 
 import { ThemeFrame } from "@/components/builds/theme-frame"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -60,17 +60,37 @@ function summarizeGear(build: BuildDetailView) {
     .join(" + ")
 }
 
+function normalizeBuildSelection(raw: string | null) {
+  if (!raw) {
+    return []
+  }
+
+  return raw
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+}
+
 export function CompareClient({
   allBuilds,
-  selectedBuilds,
-  initialBuilds,
+  allBuildDetails,
 }: {
   allBuilds: BuildCardView[]
-  selectedBuilds: BuildDetailView[]
-  initialBuilds: string[]
+  allBuildDetails: BuildDetailView[]
 }) {
-  const [selectedSlugs, setSelectedSlugs] = useState(initialBuilds)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const selectedSlugs = useMemo(
+    () => normalizeBuildSelection(searchParams.get("builds")),
+    [searchParams],
+  )
+  const selectedBuilds = useMemo(
+    () =>
+      selectedSlugs
+        .map((slug) => allBuildDetails.find((build) => build.slug === slug))
+        .filter((build): build is BuildDetailView => Boolean(build)),
+    [allBuildDetails, selectedSlugs],
+  )
   const comparisonTheme =
     selectedBuilds.length > 0 &&
     selectedBuilds.every((build) => build.game.slug === selectedBuilds[0]?.game.slug)
@@ -80,8 +100,6 @@ export function CompareClient({
   const family = theme.family
 
   function syncSelection(nextSelection: string[]) {
-    setSelectedSlugs(nextSelection)
-
     startTransition(() => {
       const query = nextSelection.length
         ? `?builds=${nextSelection.join(",")}`

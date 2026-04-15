@@ -4,9 +4,16 @@ import { CatalogClient } from "@/components/builds/catalog-client"
 import { PageShell } from "@/components/builds/page-shell"
 import { isGameSlug } from "@/lib/data/themes"
 import { getBuildCardsByGame, getGameBySlug } from "@/lib/data/queries"
+import { gameSlugs } from "@/types/builds"
 
 type BuildCatalogPageProps = {
   params: Promise<{ slug: string }>
+}
+
+export const dynamicParams = false
+
+export function generateStaticParams() {
+  return gameSlugs.map((slug) => ({ slug }))
 }
 
 export default async function BuildCatalogPage({

@@ -14,9 +14,16 @@ import { buttonVariants } from "@/components/ui/button"
 import { getGameTheme, isGameSlug } from "@/lib/data/themes"
 import { getBuildCardsByGame, getGameBySlug } from "@/lib/data/queries"
 import { cn } from "@/lib/utils"
+import { gameSlugs } from "@/types/builds"
 
 type GamePageProps = {
   params: Promise<{ slug: string }>
+}
+
+export const dynamicParams = false
+
+export function generateStaticParams() {
+  return gameSlugs.map((slug) => ({ slug }))
 }
 
 export default async function GameLandingPage({ params }: GamePageProps) {

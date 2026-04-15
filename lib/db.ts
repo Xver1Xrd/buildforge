@@ -1,13 +1,23 @@
+import fs from "node:fs";
+import path from "node:path";
+
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as { prisma?: PrismaClient };
-const fallbackSqliteUrl = "file:./dev.db";
+const sqlitePathCandidates = [
+  path.join(process.cwd(), "prisma", "dev.db"),
+  path.join(process.cwd(), "dev.db"),
+];
 
-// Vercel preview/production builds do not get the local `.env` file from the repo.
-// When no DATABASE_URL is configured, fall back to the bundled SQLite dataset so
-// the app can still prerender and serve the seeded MVP catalog.
+// Vercel preview/production runtime may not inject DATABASE_URL for this local MVP.
+// Fall back to the bundled SQLite dataset using an absolute file path so both
+// build-time prerendering and runtime server functions can resolve the same DB.
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = fallbackSqliteUrl;
+  const bundledSqlitePath =
+    sqlitePathCandidates.find((candidate) => fs.existsSync(candidate)) ??
+    sqlitePathCandidates[0];
+
+  process.env.DATABASE_URL = `file:${bundledSqlitePath}`;
 }
 
 export const db =
