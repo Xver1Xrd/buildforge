@@ -1,13 +1,262 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum ModeFocus {
+  PVE
+  PVP
+  HYBRID
+}
+
+enum CombatStyle {
+  MELEE
+  RANGED
+  SPELLCASTER
+  HACKING
+  HYBRID
+}
+
+enum StatCategory {
+  ATTRIBUTE
+  SUPPORT
+}
+
+enum ProgressionStage {
+  EARLY
+  MID
+  LATE
+}
+
+enum OperatingSystemType {
+  SANDEVISTAN
+  CYBERDECK
+  BERSERK
+}
+
+enum TagCategory {
+  STYLE
+  DAMAGE
+  DEFENSE
+  UTILITY
+  MODE
+  TEMPO
+  ROLE
+}
+
+model Game {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  name        String
+  tagline     String
+  description String
+  themeKey    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  builds Build[]
+}
+
+model Build {
+  id                  Int         @id @default(autoincrement())
+  gameId              Int
+  slug                String      @unique
+  name                String
+  primaryArchetype    String
+  summary             String
+  description         String
+  playstyle           String
+  difficulty          Difficulty
+  primaryMode         ModeFocus
+  combatStyle         CombatStyle
+  stealthRating       Int         @default(0)
+  loudRating          Int         @default(0)
+  hackingRating       Int         @default(0)
+  mobilityRating      Int         @default(0)
+  survivabilityRating Int         @default(0)
+  burstRating         Int         @default(0)
+  utilityRating       Int         @default(0)
+  pveRating           Int         @default(0)
+  pvpRating           Int         @default(0)
+  progressionCurve    String
+  difficultyNotes     String
+  isFeatured          Boolean     @default(false)
+  sortOrder           Int         @default(0)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  game             Game                   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  stats            BuildStat[]
+  weapons          Weapon[]
+  armorPieces      ArmorPiece[]
+  talismans        Talisman[]
+  spells           Spell[]
+  perks            Perk[]
+  cyberware        Cyberware[]
+  operatingSystems OperatingSystemChoice[]
+  progressionSteps ProgressionStep[]
+  strengths        Strength[]
+  weaknesses       Weakness[]
+  tags             BuildTag[]
+  alternatives     BuildAlternative[]     @relation("BuildAlternatives")
+  alternativeOf    BuildAlternative[]     @relation("AlternativeTargets")
+
+  @@index([gameId, sortOrder])
+  @@index([gameId, difficulty])
+}
+
+model BuildStat {
+  id       Int          @id @default(autoincrement())
+  buildId   Int
+  category StatCategory
+  key      String
+  label    String
+  value    Int
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+
+  @@index([buildId, category])
+}
+
+model Weapon {
+  id               Int    @id @default(autoincrement())
+  buildId          Int
+  name             String
+  slot             String
+  scalingOrProfile String
+  description      String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model ArmorPiece {
+  id          Int    @id @default(autoincrement())
+  buildId     Int
+  name        String
+  slot        String
+  effect      String
+  weightClass String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model Talisman {
+  id      Int    @id @default(autoincrement())
+  buildId Int
+  name    String
+  effect  String
+  slot    String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model Spell {
+  id          Int    @id @default(autoincrement())
+  buildId     Int
+  name        String
+  school      String
+  description String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model Perk {
+  id          Int    @id @default(autoincrement())
+  buildId     Int
+  name        String
+  tree        String
+  description String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model Cyberware {
+  id          Int    @id @default(autoincrement())
+  buildId     Int
+  name        String
+  slot        String
+  description String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model OperatingSystemChoice {
+  id          Int                 @id @default(autoincrement())
+  buildId     Int
+  name        String
+  type        OperatingSystemType
+  description String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model ProgressionStep {
+  id          Int              @id @default(autoincrement())
+  buildId     Int
+  stage       ProgressionStage
+  stepOrder   Int
+  title       String
+  description String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+
+  @@index([buildId, stage, stepOrder])
+}
+
+model Strength {
+  id      Int    @id @default(autoincrement())
+  buildId Int
+  text    String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model Weakness {
+  id      Int    @id @default(autoincrement())
+  buildId Int
+  text    String
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id       Int         @id @default(autoincrement())
+  slug     String      @unique
+  label    String
+  category TagCategory
+
+  builds BuildTag[]
+}
+
+model BuildTag {
+  buildId Int
+  tagId   Int
+  weight  Int @default(1)
+
+  build Build @relation(fields: [buildId], references: [id], onDelete: Cascade)
+  tag   Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([buildId, tagId])
+}
+
+model BuildAlternative {
+  id                 Int    @id @default(autoincrement())
+  buildId            Int
+  alternativeBuildId Int
+  reason             String
+
+  build       Build @relation("BuildAlternatives", fields: [buildId], references: [id], onDelete: Cascade)
+  alternative Build @relation("AlternativeTargets", fields: [alternativeBuildId], references: [id], onDelete: Cascade)
+
+  @@unique([buildId, alternativeBuildId])
 }
