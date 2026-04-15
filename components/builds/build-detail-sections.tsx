@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { ThemeFrame } from "@/components/builds/theme-frame"
+import { gameProfiles } from "@/lib/config/games"
 import { getGameTheme, type ThemeFamily } from "@/lib/data/themes"
 import {
   getDifficultyLabel,
@@ -183,6 +184,7 @@ function DetailList({
 export function BuildDetailSections({ build }: { build: BuildDetailView }) {
   const theme = getGameTheme(build.game.slug)
   const family = theme.family
+  const labels = gameProfiles[build.game.slug].sectionLabels
 
   return (
     <div className="space-y-6">
@@ -339,12 +341,12 @@ export function BuildDetailSections({ build }: { build: BuildDetailView }) {
               Key equipment below is the shortest route to the real build identity; use it as the proof point for how the statline turns into actual combat loops.
             </p>
             <DetailList title="Weapons" items={build.weapons} family={family} theme={theme} />
-            <DetailList title="Armor" items={build.armorPieces} family={family} theme={theme} />
-            <DetailList title="Talismans" items={build.talismans} family={family} theme={theme} />
-            <DetailList title="Spells" items={build.spells} family={family} theme={theme} />
-            <DetailList title="Perks" items={build.perks} family={family} theme={theme} />
-            <DetailList title="Cyberware" items={build.cyberware} family={family} theme={theme} />
-            <DetailList title="Operating system" items={build.operatingSystems} family={family} theme={theme} />
+            <DetailList title={labels.armorPieces} items={build.armorPieces} family={family} theme={theme} />
+            <DetailList title={labels.talismans} items={build.talismans} family={family} theme={theme} />
+            <DetailList title={labels.spells} items={build.spells} family={family} theme={theme} />
+            <DetailList title={labels.perks} items={build.perks} family={family} theme={theme} />
+            <DetailList title={labels.cyberware} items={build.cyberware} family={family} theme={theme} />
+            <DetailList title={labels.operatingSystems} items={build.operatingSystems} family={family} theme={theme} />
           </div>
         </ThemeFrame>
 

@@ -3,6 +3,7 @@
 import Link from "next/link"
 
 import { buttonVariants } from "@/components/ui/button"
+import { supportedGameProfiles } from "@/lib/config/games"
 import { cn } from "@/lib/utils"
 import type { BuildCardView } from "@/types/builds"
 
@@ -33,24 +34,18 @@ export function FavoritesClient({ builds }: { builds: BuildCardView[] }) {
           local storage, ready for a quick comparison or a later revisit.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link
-            href="/games/elden-ring/builds"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "border-white/12 bg-white/6 text-white hover:bg-white/10",
-            )}
-          >
-            Open Elden Ring
-          </Link>
-          <Link
-            href="/games/cyberpunk-2077/builds"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "border-white/12 bg-white/6 text-white hover:bg-white/10",
-            )}
-          >
-            Open Cyberpunk 2077
-          </Link>
+          {supportedGameProfiles.map((profile) => (
+            <Link
+              key={profile.slug}
+              href={`/games/${profile.slug}/builds`}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "border-white/12 bg-white/6 text-white hover:bg-white/10",
+              )}
+            >
+              {profile.navLabel}
+            </Link>
+          ))}
         </div>
       </div>
     )

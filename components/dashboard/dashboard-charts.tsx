@@ -17,6 +17,7 @@ import {
 
 import { ThemeFrame } from "@/components/builds/theme-frame"
 import { buttonVariants } from "@/components/ui/button"
+import { gameProfiles } from "@/lib/config/games"
 import { cn } from "@/lib/utils"
 import type { DashboardView } from "@/types/builds"
 
@@ -25,6 +26,27 @@ const chartTabs = [
   { value: "tags", label: "Tag weight" },
   { value: "ratings", label: "Rating radar" },
 ] as const
+
+function getRadarPalette(gameSlug: DashboardView["ratingHeatmap"][number]["gameSlug"]) {
+  const family = gameProfiles[gameSlug].family
+
+  switch (family) {
+    case "elden":
+      return { stroke: "#e7c46c", fill: "rgba(231,196,108,0.28)" }
+    case "cyberpunk":
+      return { stroke: "#69f2ff", fill: "rgba(105,242,255,0.24)" }
+    case "witcher":
+      return { stroke: "#9ad8b4", fill: "rgba(154,216,180,0.24)" }
+    case "dark-souls-3":
+      return { stroke: "#ff9d70", fill: "rgba(255,157,112,0.24)" }
+    case "dark-souls-2":
+      return { stroke: "#8ec5b7", fill: "rgba(142,197,183,0.24)" }
+    case "lies-of-p":
+      return { stroke: "#e3b296", fill: "rgba(227,178,150,0.24)" }
+    default:
+      return { stroke: "#69f2ff", fill: "rgba(105,242,255,0.24)" }
+  }
+}
 
 export function DashboardCharts({ data }: { data: DashboardView }) {
   const [activeTab, setActiveTab] = useState<(typeof chartTabs)[number]["value"]>(
@@ -105,6 +127,11 @@ export function DashboardCharts({ data }: { data: DashboardView }) {
                 key={entry.gameSlug}
                 className="h-[320px] min-w-0 rounded-2xl border border-white/10 bg-black/20 px-3 py-3"
               >
+                {(() => {
+                  const palette = getRadarPalette(entry.gameSlug)
+
+                  return (
+                    <>
                 <p className="px-3 text-xs uppercase tracking-[0.24em] text-slate-500">
                   {entry.label}
                 </p>
@@ -123,12 +150,15 @@ export function DashboardCharts({ data }: { data: DashboardView }) {
                     <PolarAngleAxis dataKey="metric" stroke="#a6b4d4" />
                     <Radar
                       dataKey="value"
-                      stroke={entry.gameSlug === "elden-ring" ? "#e7c46c" : "#69f2ff"}
-                      fill={entry.gameSlug === "elden-ring" ? "rgba(231,196,108,0.28)" : "rgba(105,242,255,0.24)"}
+                      stroke={palette.stroke}
+                      fill={palette.fill}
                       fillOpacity={1}
                     />
                   </RadarChart>
                 </ResponsiveContainer>
+                    </>
+                  )
+                })()}
               </div>
             ))}
           </div>

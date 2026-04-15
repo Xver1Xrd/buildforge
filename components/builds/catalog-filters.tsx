@@ -2,7 +2,6 @@
 
 import { Input } from "@/components/ui/input"
 import { getGameTheme } from "@/lib/data/themes"
-import { isCyberpunkSlug } from "@/lib/presentation"
 import { cn } from "@/lib/utils"
 import type { DifficultyLevel, GameSlug } from "@/types/builds"
 
@@ -37,15 +36,14 @@ export function CatalogFilters({
   onTagChange: (value: string) => void
 }) {
   const theme = getGameTheme(gameSlug)
-  const isCyberpunk = isCyberpunkSlug(gameSlug)
-  const isElden = gameSlug === "elden-ring"
+  const family = theme.family
 
   return (
     <div
       className={cn(
         "border px-4 py-4 sm:px-5",
         theme.panelClass,
-        isCyberpunk ? "cyber-cut-lg rounded-none" : "rounded-[30px]",
+        family === "cyberpunk" ? "cyber-cut-lg rounded-none" : "rounded-[30px]",
       )}
     >
       <div className="grid gap-3 lg:grid-cols-[1.4fr_0.8fr_0.8fr]">
@@ -55,11 +53,11 @@ export function CatalogFilters({
           placeholder="Search by build, tag, weapon, perk, or description"
           className={cn(
             "h-11 border-white/10 bg-black/20 px-4 text-white placeholder:text-slate-500",
-            isCyberpunk
+            family === "cyberpunk"
               ? "rounded-none border-cyan-300/20 bg-black focus-visible:border-cyan-300"
-              : isElden
+              : family === "elden"
                 ? "rounded-[22px] border-amber-200/14 bg-[rgba(10,8,6,0.75)] text-amber-50 placeholder:text-stone-500 focus-visible:border-amber-100/28 focus-visible:ring-amber-200/12"
-                : "rounded-2xl",
+              : "rounded-2xl",
           )}
         />
         <label className="space-y-2 text-sm text-slate-300">
@@ -73,9 +71,9 @@ export function CatalogFilters({
             }
             className={cn(
               "h-11 w-full border border-white/10 bg-black/20 px-4 text-white outline-none transition focus:border-cyan-300/40",
-              isCyberpunk
+              family === "cyberpunk"
                 ? "rounded-none border-cyan-300/20 bg-black"
-                : isElden
+                : family === "elden"
                   ? "rounded-[22px] border-amber-200/14 bg-[rgba(10,8,6,0.75)] text-amber-50 focus:border-amber-100/28"
                   : "rounded-2xl",
             )}
@@ -96,9 +94,9 @@ export function CatalogFilters({
             onChange={(event) => onSortChange(event.target.value)}
             className={cn(
               "h-11 w-full border border-white/10 bg-black/20 px-4 text-white outline-none transition focus:border-cyan-300/40",
-              isCyberpunk
+              family === "cyberpunk"
                 ? "rounded-none border-cyan-300/20 bg-black"
-                : isElden
+                : family === "elden"
                   ? "rounded-[22px] border-amber-200/14 bg-[rgba(10,8,6,0.75)] text-amber-50 focus:border-amber-100/28"
                   : "rounded-2xl",
             )}
@@ -127,7 +125,7 @@ export function CatalogFilters({
           onClick={() => onTagChange("")}
           className={cn(
             "border px-3 py-1.5 text-xs font-medium uppercase tracking-[0.18em] transition",
-            isCyberpunk ? "rounded-none" : isElden ? "rounded-sm" : "rounded-full",
+            family === "cyberpunk" ? "rounded-none" : family === "lies-of-p" ? "rounded-[10px]" : "rounded-sm",
             activeTag ? "border-white/10 bg-white/4 text-slate-300 hover:bg-white/8" : theme.badgeClass,
           )}
         >
@@ -140,10 +138,10 @@ export function CatalogFilters({
             onClick={() => onTagChange(tag.slug)}
             className={cn(
               "border px-3 py-1.5 text-xs font-medium uppercase tracking-[0.18em] transition",
-              isCyberpunk ? "rounded-none" : isElden ? "rounded-sm" : "rounded-full",
+              family === "cyberpunk" ? "rounded-none" : family === "lies-of-p" ? "rounded-[10px]" : "rounded-sm",
               activeTag === tag.slug
                 ? theme.badgeClass
-                : isElden
+                : family === "elden"
                   ? "border-amber-200/12 bg-[rgba(198,168,91,0.03)] text-stone-300 hover:bg-[rgba(198,168,91,0.08)]"
                   : "border-white/10 bg-white/4 text-slate-300 hover:bg-white/8",
             )}

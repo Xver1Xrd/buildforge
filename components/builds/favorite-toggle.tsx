@@ -17,7 +17,6 @@ export function FavoriteToggle({
 }) {
   const { hydrated, isFavorite, toggleFavorite } = useFavorites()
   const theme = getGameTheme(themeSlug)
-  const isElden = themeSlug === "elden-ring"
   const active = hydrated && isFavorite(buildSlug)
 
   return (
@@ -27,9 +26,7 @@ export function FavoriteToggle({
       size="icon-sm"
       onClick={() => toggleFavorite(buildSlug)}
       className={`${
-        isElden
-          ? "rounded-[10px] elden-button-secondary text-amber-50/82 hover:text-[#fff3cf]"
-          : theme.buttonClass
+        theme.secondaryButtonClass
       } ${active ? "text-rose-200 ring-2 ring-rose-300/40" : ""}`}
       aria-label={active ? "Remove from favorites" : "Save to favorites"}
     >

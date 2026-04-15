@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 
+import { getGameProfile } from "@/lib/config/games";
 import type {
   AlternativeBuildView,
   BuildCardView,
@@ -169,6 +170,18 @@ function formatStatline(stats: StatEntryView[]): string {
     "body",
     "mind",
     "endurance",
+    "combat",
+    "alchemy",
+    "signs",
+    "adrenaline",
+    "toxicity",
+    "attunement",
+    "adaptability",
+    "motivity",
+    "technique",
+    "advance",
+    "capacity",
+    "vitality",
   ];
 
   const ranked = [...stats].sort((left, right) => {
@@ -176,6 +189,36 @@ function formatStatline(stats: StatEntryView[]): string {
     const rightIndex = offensivePriority.indexOf(right.key);
     const normalizedLeft = leftIndex === -1 ? offensivePriority.length : leftIndex;
     const normalizedRight = rightIndex === -1 ? offensivePriority.length : rightIndex;
+
+    if (right.value !== left.value) {
+      return right.value - left.value;
+    }
+
+    if (normalizedLeft !== normalizedRight) {
+      return normalizedLeft - normalizedRight;
+    }
+
+    return left.label.localeCompare(right.label);
+  });
+
+  return ranked
+    .slice(0, 2)
+    .map((stat) => `${stat.label} ${stat.value}`)
+    .join(" / ");
+}
+
+function formatGameStatline(record: BuildRecord, attributeStats: StatEntryView[]) {
+  const profile = getGameProfile(record.game.slug as BuildCardView["game"]["slug"]);
+
+  if (!profile) {
+    return formatStatline(attributeStats);
+  }
+
+  const ranked = [...attributeStats].sort((left, right) => {
+    const leftIndex = profile.statPriority.indexOf(left.key);
+    const rightIndex = profile.statPriority.indexOf(right.key);
+    const normalizedLeft = leftIndex === -1 ? profile.statPriority.length : leftIndex;
+    const normalizedRight = rightIndex === -1 ? profile.statPriority.length : rightIndex;
 
     if (right.value !== left.value) {
       return right.value - left.value;
@@ -219,7 +262,7 @@ function mapSignature(record: BuildRecord, attributeStats: StatEntryView[]): Bui
 
   return {
     loadout,
-    statline: formatStatline(attributeStats),
+    statline: formatGameStatline(record, attributeStats),
     route,
   };
 }
@@ -232,6 +275,8 @@ function buildSearchIndex(record: BuildRecord, tags: TaggedStatView[]) {
     record.game.name,
     ...tags.map((tag) => tag.label),
     ...record.weapons.map((weapon) => weapon.name),
+    ...record.armorPieces.map((armor) => armor.name),
+    ...record.talismans.map((talisman) => talisman.name),
     ...record.spells.map((spell) => spell.name),
     ...record.perks.map((perk) => perk.name),
     ...record.cyberware.map((chrome) => chrome.name),

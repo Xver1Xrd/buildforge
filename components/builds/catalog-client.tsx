@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import { buttonVariants } from "@/components/ui/button"
 import { ThemeFrame } from "@/components/builds/theme-frame"
 import { getGameTheme } from "@/lib/data/themes"
-import { isCyberpunkSlug } from "@/lib/presentation"
 import { cn } from "@/lib/utils"
 import type { BuildCardView, DifficultyLevel, GameSlug } from "@/types/builds"
 
@@ -28,8 +27,7 @@ export function CatalogClient({
   const deferredSearch = useDeferredValue(search)
   const router = useRouter()
   const theme = getGameTheme(gameSlug)
-  const isCyberpunk = isCyberpunkSlug(gameSlug)
-  const isElden = gameSlug === "elden-ring"
+  const family = theme.family
 
   const tagOptions = [...new Map(
     builds
@@ -114,7 +112,7 @@ export function CatalogClient({
 
       <ThemeFrame
         themeSlug={gameSlug}
-        className={cn(isCyberpunk ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
+        className={cn(family === "cyberpunk" ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
       >
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 sm:px-6">
           <div>
@@ -133,11 +131,7 @@ export function CatalogClient({
               buttonVariants({ variant: "outline", size: "sm" }),
               selectedForCompare.length < 2
                 ? "cursor-not-allowed border-white/10 bg-white/4 text-slate-500"
-                : isCyberpunk
-                  ? "rounded-none border-yellow-300 bg-yellow-300 text-black hover:bg-yellow-200"
-                  : isElden
-                    ? "rounded-[10px] elden-button-primary hover:-translate-y-0.5"
-                    : theme.buttonClass,
+                : theme.primaryButtonClass,
             )}
           >
             Compare builds: {selectedForCompare.length || 0}

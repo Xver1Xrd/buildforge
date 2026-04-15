@@ -60,6 +60,7 @@ export const tagSeeds = [
   { slug: "status-pressure", label: "Status Pressure", category: TagCategory.UTILITY },
   { slug: "support-buffs", label: "Support and Buffs", category: TagCategory.UTILITY },
   { slug: "stagger", label: "Stagger Control", category: TagCategory.UTILITY },
+  { slug: "guard-break", label: "Guard Break", category: TagCategory.UTILITY },
   { slug: "pve", label: "PvE", category: TagCategory.MODE },
   { slug: "pvp", label: "PvP", category: TagCategory.MODE },
   { slug: "hybrid-mode", label: "Hybrid Mode", category: TagCategory.MODE },

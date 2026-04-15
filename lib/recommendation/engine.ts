@@ -81,106 +81,74 @@ const styleProfiles: Record<AdvisorGameSlug, Record<string, StyleProfile>> = {
   },
   "witcher-3": {
     "combat-alchemy": {
-      primarySlugs: ["viper-alchemy-blender"],
-      bonusTags: ["alchemy", "melee", "adrenaline", "sustain"],
+      primarySlugs: ["euphoria-wolven-alchemist"],
+      bonusTags: ["alchemy", "mutation", "swordmaster", "sustain"],
     },
     "sign-gryphon": {
-      primarySlugs: ["gryphon-sign-weaver"],
-      bonusTags: ["signs", "caster", "crowd-control", "utility"],
+      primarySlugs: ["griffin-sign-architect"],
+      bonusTags: ["signs", "spellcaster", "control", "support-buffs"],
     },
     "fast-attack-cat": {
-      primarySlugs: ["cat-school-whirl"],
-      bonusTags: ["mobility", "precision", "melee", "boss-burst"],
+      primarySlugs: ["feline-whirl-duelist"],
+      bonusTags: ["swordmaster", "whirl", "mobility", "precision"],
     },
     "heavy-bear": {
-      primarySlugs: ["ursine-quen-bastion"],
-      bonusTags: ["tank", "sustain", "signs", "monster-hunter"],
-    },
-    "euphoria-hybrid": {
-      primarySlugs: ["euphoria-mutant"],
-      bonusTags: ["hybrid", "alchemy", "signs", "boss-burst"],
-    },
-    "bomb-control": {
-      primarySlugs: ["demolition-bombardier"],
-      bonusTags: ["bombs", "crowd-control", "alchemy", "explosive"],
+      primarySlugs: ["ursine-quen-warden"],
+      bonusTags: ["tank", "sustain", "signs", "beginner-friendly"],
     },
   },
   "dark-souls-3": {
     "strength-ultra": {
-      primarySlugs: ["lothric-ultra-knight"],
-      bonusTags: ["melee", "tank", "boss-burst", "poise"],
+      primarySlugs: ["cathedral-crusher"],
+      bonusTags: ["strength", "ultra-greatsword", "stagger", "tank"],
     },
     "dex-weapon-art": {
-      primarySlugs: ["sellsword-weapon-master"],
-      bonusTags: ["weapon-arts", "mobility", "precision", "pvp"],
-    },
-    "quality-knight": {
-      primarySlugs: ["quality-gael-knight"],
-      bonusTags: ["hybrid", "sustain", "melee", "precision"],
+      primarySlugs: ["sellsword-twinblade-ace"],
+      bonusTags: ["dexterity", "twinblades", "mobility", "precision"],
     },
     pyromancer: {
-      primarySlugs: ["chaos-pyromancer"],
+      primarySlugs: ["chaos-pyromancer-lord"],
       bonusTags: ["pyromancy", "crowd-control", "explosive", "support-buffs"],
     },
     "faith-lightning": {
-      primarySlugs: ["sunlight-spear-herald"],
-      bonusTags: ["faith", "precision", "boss-burst", "support-buffs"],
-    },
-    "dark-bleed": {
-      primarySlugs: ["londor-darkblade"],
-      bonusTags: ["dark-magic", "status-pressure", "pvp", "mobility"],
+      primarySlugs: ["sunlight-faith-paladin"],
+      bonusTags: ["miracles", "lightning", "support-buffs", "sustain"],
     },
   },
   "dark-souls-2": {
     "power-stance": {
-      primarySlugs: ["drangleic-power-stancer"],
-      bonusTags: ["power-stance", "mobility", "explosive", "pve"],
+      primarySlugs: ["powerstance-raider"],
+      bonusTags: ["quality", "aggressive", "explosive", "mobility"],
     },
     hexer: {
-      primarySlugs: ["black-gulch-hexer"],
-      bonusTags: ["hexes", "dark-magic", "support-buffs", "precision"],
+      primarySlugs: ["sunset-hexer-scholar"],
+      bonusTags: ["hexes", "dark", "spellcaster", "utility"],
     },
     "greatshield-sentinel": {
-      primarySlugs: ["iron-keep-sentinel"],
+      primarySlugs: ["drangleic-stonewall"],
       bonusTags: ["tank", "sustain", "methodical", "pve"],
     },
     "rapier-duelist": {
-      primarySlugs: ["old-leo-rapier"],
-      bonusTags: ["precision", "pvp", "boss-burst", "mobility"],
-    },
-    "quality-drangleic": {
-      primarySlugs: ["drangleic-quality-veteran"],
-      bonusTags: ["hybrid", "sustain", "precision", "adaptable"],
-    },
-    "sorcerer-scholar": {
-      primarySlugs: ["scholar-soul-mage"],
-      bonusTags: ["sorcery", "utility", "precision", "pve"],
+      primarySlugs: ["ice-rapier-duelist"],
+      bonusTags: ["rapier", "precision", "mobility", "pve"],
     },
   },
   "lies-of-p": {
     "motivity-greatblade": {
-      primarySlugs: ["krat-ark-greatblade"],
-      bonusTags: ["tank", "stagger", "boss-burst", "pve"],
+      primarySlugs: ["motivity-puppet-axe-bruiser"],
+      bonusTags: ["motivity", "stagger", "boss-burst", "tank"],
     },
     "technique-dancer": {
-      primarySlugs: ["puppet-ripper-dancer"],
-      bonusTags: ["mobility", "precision", "aggression", "stagger"],
+      primarySlugs: ["technique-two-dragons-maestro"],
+      bonusTags: ["technique", "mobility", "precision", "perfect-guard"],
     },
     "advance-alchemist": {
-      primarySlugs: ["acidic-alchemist"],
-      bonusTags: ["elemental", "status-pressure", "crowd-control", "utility"],
-    },
-    "perfect-guard": {
-      primarySlugs: ["perfect-guard-duelist"],
-      bonusTags: ["perfect-guard", "precision", "stagger", "methodical"],
+      primarySlugs: ["advance-alchemical-saboteur"],
+      bonusTags: ["advance", "elemental", "legion-arm", "utility"],
     },
     "legion-aegis": {
-      primarySlugs: ["aegis-legionnaire"],
-      bonusTags: ["legion-arms", "tank", "sustain", "utility"],
-    },
-    "balanced-puppet": {
-      primarySlugs: ["puppet-prince-hybrid"],
-      bonusTags: ["hybrid", "mobility", "stagger", "legion-arms"],
+      primarySlugs: ["aegis-perfect-guard-warden"],
+      bonusTags: ["perfect-guard", "tank", "legion-arm", "sustain"],
     },
   },
 };
@@ -200,7 +168,7 @@ const focusProfiles: Record<AdvisorGameSlug, Record<string, FocusProfile>> = {
   "witcher-3": {
     MONSTER_HUNTER: {
       ratingKey: "pve",
-      bonusTags: ["monster-hunter", "alchemy", "sustain", "signs"],
+      bonusTags: ["pve", "alchemy", "sustain", "signs"],
     },
     BOSS_PREP: {
       ratingKey: "burst",
@@ -208,28 +176,28 @@ const focusProfiles: Record<AdvisorGameSlug, Record<string, FocusProfile>> = {
     },
     SIGNS: {
       ratingKey: "utility",
-      bonusTags: ["signs", "crowd-control", "caster", "support-buffs"],
+      bonusTags: ["signs", "control", "spellcaster", "support-buffs"],
     },
     HYBRID: {
       ratingKey: "utility",
-      bonusTags: ["hybrid", "alchemy", "signs", "melee"],
+      bonusTags: ["hybrid", "alchemy", "signs", "swordmaster"],
     },
   },
   "dark-souls-3": {
-    PVE: { ratingKey: "pve", bonusTags: ["pve", "boss-burst", "poise", "sustain"] },
-    PVP: { ratingKey: "pvp", bonusTags: ["pvp", "mobility", "weapon-arts", "status-pressure"] },
-    HYBRID: { ratingKey: "utility", bonusTags: ["hybrid", "weapon-arts", "support-buffs", "precision"] },
+    PVE: { ratingKey: "pve", bonusTags: ["pve", "boss-burst", "stagger", "sustain"] },
+    PVP: { ratingKey: "pvp", bonusTags: ["pvp", "mobility", "precision", "explosive"] },
+    HYBRID: { ratingKey: "utility", bonusTags: ["hybrid-mode", "support-buffs", "precision", "tank"] },
   },
   "dark-souls-2": {
-    PVE: { ratingKey: "pve", bonusTags: ["pve", "power-stance", "sustain", "methodical"] },
-    PVP: { ratingKey: "pvp", bonusTags: ["pvp", "precision", "mobility", "hexes"] },
-    HYBRID: { ratingKey: "utility", bonusTags: ["hybrid", "adaptable", "power-stance", "hexes"] },
+    PVE: { ratingKey: "pve", bonusTags: ["pve", "sustain", "methodical", "precision"] },
+    PVP: { ratingKey: "pvp", bonusTags: ["precision", "mobility", "hexes", "explosive"] },
+    HYBRID: { ratingKey: "utility", bonusTags: ["hybrid-mode", "quality", "hexes", "tank"] },
   },
   "lies-of-p": {
     BOSSING: { ratingKey: "burst", bonusTags: ["boss-burst", "stagger", "perfect-guard"] },
-    PARRY: { ratingKey: "utility", bonusTags: ["perfect-guard", "precision", "guard-break"] },
-    AGGRESSION: { ratingKey: "mobility", bonusTags: ["mobility", "stagger", "legion-arms", "explosive"] },
-    HYBRID: { ratingKey: "utility", bonusTags: ["hybrid", "legion-arms", "sustain", "precision"] },
+    PARRY: { ratingKey: "utility", bonusTags: ["perfect-guard", "precision", "stagger"] },
+    AGGRESSION: { ratingKey: "mobility", bonusTags: ["mobility", "stagger", "explosive", "boss-burst"] },
+    HYBRID: { ratingKey: "utility", bonusTags: ["legion-arm", "sustain", "elemental", "precision"] },
   },
 };
 
@@ -245,18 +213,18 @@ const preferenceToTag: Record<AdvisorPreference, string[]> = {
   "smart-weapons": ["smart-weapons", "hybrid"],
   sustain: ["sustain", "tank"],
   stealth: ["stealth", "precision"],
-  alchemy: ["alchemy", "toxicity", "sustain"],
-  "sign-casting": ["signs", "caster", "crowd-control"],
-  adrenaline: ["adrenaline", "boss-burst", "melee"],
+  alchemy: ["alchemy", "mutation", "sustain"],
+  "sign-casting": ["signs", "spellcaster", "control"],
+  adrenaline: ["adrenaline", "boss-burst", "swordmaster"],
   "bomb-control": ["bombs", "crowd-control", "alchemy"],
-  "weapon-arts": ["weapon-arts", "precision", "mobility"],
-  "poise-trades": ["poise", "tank", "melee"],
+  "weapon-arts": ["dexterity", "precision", "mobility"],
+  "poise-trades": ["tank", "stagger", "melee"],
   "guard-break": ["guard-break", "stagger", "boss-burst"],
-  "power-stance": ["power-stance", "mobility", "explosive"],
-  hexes: ["hexes", "dark-magic", "support-buffs"],
+  "power-stance": ["quality", "mobility", "explosive"],
+  hexes: ["hexes", "dark", "spellcaster"],
   "perfect-guard": ["perfect-guard", "stagger", "precision"],
   stagger: ["stagger", "guard-break", "boss-burst"],
-  "legion-arms": ["legion-arms", "utility", "crowd-control"],
+  "legion-arms": ["legion-arm", "utility", "elemental"],
   "elemental-pressure": ["elemental", "status-pressure", "explosive"],
 };
 

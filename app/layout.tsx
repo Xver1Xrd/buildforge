@@ -27,9 +27,9 @@ const cyberFont = Tektur({
 })
 
 export const metadata: Metadata = {
-  title: "BuildForge — build analysis for Elden Ring and Cyberpunk 2077",
+  title: "BuildForge — build analysis for RPG and action combat games",
   description:
-    "Interactive build analysis for browsing, comparing, and choosing builds in Elden Ring and Cyberpunk 2077.",
+    "Interactive build analysis for browsing, comparing, and choosing builds across Elden Ring, Cyberpunk 2077, The Witcher 3, Dark Souls 3, Dark Souls 2, and Lies of P.",
 }
 
 export default function RootLayout({

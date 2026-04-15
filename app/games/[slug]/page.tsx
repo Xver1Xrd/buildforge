@@ -3,13 +3,16 @@ import { notFound } from "next/navigation"
 
 import { BuildCard } from "@/components/builds/build-card"
 import { CyberpunkLanding } from "@/components/builds/cyberpunk-landing"
+import { DarkSoulsThreeLanding } from "@/components/builds/dark-souls-3-landing"
+import { DarkSoulsTwoLanding } from "@/components/builds/dark-souls-2-landing"
 import { EldenRingLanding } from "@/components/builds/elden-ring-landing"
+import { LiesOfPLanding } from "@/components/builds/lies-of-p-landing"
 import { PageShell } from "@/components/builds/page-shell"
 import { ThemeFrame } from "@/components/builds/theme-frame"
+import { WitcherThreeLanding } from "@/components/builds/witcher-3-landing"
 import { buttonVariants } from "@/components/ui/button"
-import { isGameSlug } from "@/lib/data/themes"
+import { getGameTheme, isGameSlug } from "@/lib/data/themes"
 import { getBuildCardsByGame, getGameBySlug } from "@/lib/data/queries"
-import { isCyberpunkSlug } from "@/lib/presentation"
 import { cn } from "@/lib/utils"
 
 type GamePageProps = {
@@ -48,8 +51,40 @@ export default async function GameLandingPage({ params }: GamePageProps) {
     )
   }
 
+  if (slug === "witcher-3") {
+    return (
+      <PageShell themeSlug={slug}>
+        <WitcherThreeLanding game={game} builds={builds} />
+      </PageShell>
+    )
+  }
+
+  if (slug === "dark-souls-3") {
+    return (
+      <PageShell themeSlug={slug}>
+        <DarkSoulsThreeLanding game={game} builds={builds} />
+      </PageShell>
+    )
+  }
+
+  if (slug === "dark-souls-2") {
+    return (
+      <PageShell themeSlug={slug}>
+        <DarkSoulsTwoLanding game={game} builds={builds} />
+      </PageShell>
+    )
+  }
+
+  if (slug === "lies-of-p") {
+    return (
+      <PageShell themeSlug={slug}>
+        <LiesOfPLanding game={game} builds={builds} />
+      </PageShell>
+    )
+  }
+
   const topBuilds = builds.slice(0, 4)
-  const isCyberpunk = isCyberpunkSlug(slug)
+  const theme = getGameTheme(slug)
 
   return (
     <PageShell
@@ -63,9 +98,7 @@ export default async function GameLandingPage({ params }: GamePageProps) {
             href={`/games/${slug}/builds`}
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              isCyberpunk
-                ? "rounded-none border-cyan-300/30 bg-black text-cyan-100 hover:bg-cyan-300/10"
-                : "rounded-[10px] elden-button-secondary text-amber-50/88 hover:text-[#fff3cf]",
+              theme.secondaryButtonClass,
             )}
           >
             All builds
@@ -74,9 +107,7 @@ export default async function GameLandingPage({ params }: GamePageProps) {
             href={`/advisor?game=${slug}`}
             className={cn(
               buttonVariants({ variant: "outline", size: "sm" }),
-              isCyberpunk
-                ? "rounded-none border-yellow-300 bg-yellow-300 text-black hover:bg-yellow-200"
-                : "rounded-[10px] elden-button-primary hover:-translate-y-0.5",
+              theme.primaryButtonClass,
             )}
           >
             Open advisor

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const gameSlugSchema = z.enum(["elden-ring", "cyberpunk-2077"]);
+import { gameSlugs } from "@/types/builds";
+
+export const gameSlugSchema = z.enum(gameSlugs);
 
 export const compareSearchParamsSchema = z.object({
   game: gameSlugSchema.optional(),

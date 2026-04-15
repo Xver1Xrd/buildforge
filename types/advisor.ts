@@ -31,33 +31,25 @@ export type WitcherAdvisorStyle =
   | "combat-alchemy"
   | "sign-gryphon"
   | "fast-attack-cat"
-  | "heavy-bear"
-  | "euphoria-hybrid"
-  | "bomb-control";
+  | "heavy-bear";
 
 export type DarkSouls3AdvisorStyle =
   | "strength-ultra"
   | "dex-weapon-art"
-  | "quality-knight"
   | "pyromancer"
-  | "faith-lightning"
-  | "dark-bleed";
+  | "faith-lightning";
 
 export type DarkSouls2AdvisorStyle =
   | "power-stance"
   | "hexer"
   | "greatshield-sentinel"
-  | "rapier-duelist"
-  | "quality-drangleic"
-  | "sorcerer-scholar";
+  | "rapier-duelist";
 
 export type LiesOfPAdvisorStyle =
   | "motivity-greatblade"
   | "technique-dancer"
   | "advance-alchemist"
-  | "perfect-guard"
-  | "legion-aegis"
-  | "balanced-puppet";
+  | "legion-aegis";
 
 export const advisorStyles = [
   "strength-colossus",
@@ -76,26 +68,18 @@ export const advisorStyles = [
   "sign-gryphon",
   "fast-attack-cat",
   "heavy-bear",
-  "euphoria-hybrid",
-  "bomb-control",
   "strength-ultra",
   "dex-weapon-art",
-  "quality-knight",
   "pyromancer",
   "faith-lightning",
-  "dark-bleed",
   "power-stance",
   "hexer",
   "greatshield-sentinel",
   "rapier-duelist",
-  "quality-drangleic",
-  "sorcerer-scholar",
   "motivity-greatblade",
   "technique-dancer",
   "advance-alchemist",
-  "perfect-guard",
   "legion-aegis",
-  "balanced-puppet",
 ] as const;
 
 export type AdvisorStyle =

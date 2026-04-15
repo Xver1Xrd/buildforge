@@ -5,7 +5,10 @@ import { AnimatePresence, motion } from "framer-motion"
 import {
   ArrowUpRight,
   BarChart3,
+  Castle,
   Cpu,
+  FlaskConical,
+  Flame,
   GitCompareArrows,
   Heart,
   Home,
@@ -13,19 +16,33 @@ import {
   Search,
   Shield,
   Sparkles,
+  Swords,
 } from "lucide-react"
 import { useDeferredValue, useState } from "react"
 
 import { FavoriteToggle } from "@/components/builds/favorite-toggle"
+import { gameProfiles, supportedGameProfiles } from "@/lib/config/games"
 import { getGameTheme } from "@/lib/data/themes"
 import { getDifficultyLabel } from "@/lib/presentation"
 import { cn } from "@/lib/utils"
 import type { BuildCardView, GameSlug, GameView } from "@/types/builds"
 
+const gameIcons = {
+  "elden-ring": Shield,
+  "cyberpunk-2077": Cpu,
+  "witcher-3": FlaskConical,
+  "dark-souls-3": Flame,
+  "dark-souls-2": Castle,
+  "lies-of-p": Swords,
+} as const
+
 const sidebarLinks = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/games/elden-ring/builds", label: "Elden Ring", icon: Shield },
-  { href: "/games/cyberpunk-2077/builds", label: "Cyberpunk 2077", icon: Cpu },
+  ...supportedGameProfiles.map((profile) => ({
+    href: `/games/${profile.slug}/builds`,
+    label: profile.navLabel,
+    icon: gameIcons[profile.slug],
+  })),
   { href: "/compare", label: "Compare", icon: GitCompareArrows },
   { href: "/advisor", label: "Advisor", icon: Sparkles },
   { href: "/favorites", label: "Favorites", icon: Heart },
@@ -34,81 +51,152 @@ const sidebarLinks = [
 
 const worldFilters: Array<{ value: "all" | GameSlug; label: string }> = [
   { value: "all", label: "All routes" },
-  { value: "elden-ring", label: "Elden Ring" },
-  { value: "cyberpunk-2077", label: "Cyberpunk 2077" },
+  ...supportedGameProfiles.map((profile) => ({
+    value: profile.slug,
+    label: profile.navLabel,
+  })),
 ]
 
-const artworkByGame: Partial<Record<GameSlug, { hero: string; tile: string }>> = {
-  "elden-ring": {
-    hero: "/home/elden-ring-hero.jpg",
-    tile: "/home/elden-ring-tile.jpg",
-  },
-  "cyberpunk-2077": {
-    hero: "/home/cyberpunk-hero.jpg",
-    tile: "/home/cyberpunk-tile.jpg",
-  },
-}
-
-const fallbackArtwork = artworkByGame["elden-ring"] ?? {
-  hero: "/home/elden-ring-hero.jpg",
-  tile: "/home/elden-ring-tile.jpg",
-}
+const fallbackArtwork = gameProfiles["elden-ring"].homeArt
 
 function getPrimaryMetric(build: BuildCardView) {
-  if (build.game.slug === "elden-ring") {
-    if (build.ratings.pve >= build.ratings.pvp) {
-      return { label: "PvE ready", value: `${build.ratings.pve}/10` }
-    }
-
-    return { label: "PvP ready", value: `${build.ratings.pvp}/10` }
-  }
-
+  const profile = gameProfiles[build.game.slug]
   const candidates = [
-    { label: "Hacking", value: build.ratings.hacking },
-    { label: "Stealth", value: build.ratings.stealth },
-    { label: "Burst", value: build.ratings.burst },
-  ].sort((left, right) => right.value - left.value)
+    profile.primaryMetric,
+    ...profile.headlineMetrics,
+  ]
+    .map((metric) => ({
+      label: metric.label,
+      value: build.ratings[metric.ratingKey],
+    }))
+    .sort((left, right) => right.value - left.value)
 
   return {
-    label: candidates[0]?.label ?? "Burst",
+    label: candidates[0]?.label ?? profile.primaryMetric.label,
     value: `${candidates[0]?.value ?? build.ratings.burst}/10`,
   }
 }
 
 function getArtwork(build: BuildCardView, variant: "hero" | "tile") {
-  return (artworkByGame[build.game.slug] ?? fallbackArtwork)[variant]
+  return (gameProfiles[build.game.slug]?.homeArt ?? fallbackArtwork)[variant]
 }
 
 function getVisualLanguage(build: BuildCardView) {
-  const isElden = build.game.slug === "elden-ring"
+  const family = gameProfiles[build.game.slug].family
+
+  if (family === "elden") {
+    return {
+      frame: "border-amber-200/24 shadow-[0_28px_90px_rgba(28,16,4,0.22),0_0_40px_rgba(198,168,91,0.16)]",
+      accentText: "text-amber-50/90",
+      mutedText: "text-amber-100/72",
+      chip: "border-amber-200/22 bg-[rgba(255,244,214,0.16)] text-amber-50/92",
+      outlineChip: "border-amber-200/18 bg-[rgba(255,248,230,0.1)] text-amber-50/84",
+      panel: "border-amber-100/14 bg-[linear-gradient(180deg,rgba(255,248,230,0.16),rgba(21,13,8,0.26))]",
+      label: "Tarnished route",
+      watermark: "ERDTREE",
+      activeDot: "border-amber-100 bg-amber-100 shadow-[0_0_18px_rgba(255,220,140,0.45)]",
+      secondaryAction: "border-amber-100/18 bg-[rgba(255,247,225,0.12)] text-amber-50 hover:bg-[rgba(255,247,225,0.18)]",
+      overlay: "bg-[radial-gradient(circle_at_20%_18%,rgba(255,220,150,0.26),transparent_24%),linear-gradient(118deg,rgba(255,248,225,0.08)_0%,rgba(12,10,8,0.05)_30%,rgba(11,8,5,0.58)_72%,rgba(8,7,6,0.84)_100%)]",
+    }
+  }
+
+  if (family === "cyberpunk") {
+    return {
+      frame: "border-cyan-300/24 shadow-[0_28px_90px_rgba(8,16,28,0.24),0_0_40px_rgba(60,225,255,0.16)]",
+      accentText: "text-cyan-50/92",
+      mutedText: "text-cyan-50/76",
+      chip: "border-cyan-300/24 bg-[rgba(151,246,255,0.16)] text-cyan-50/92",
+      outlineChip: "border-cyan-300/22 bg-[rgba(8,24,33,0.36)] text-cyan-50/84",
+      panel: "border-cyan-200/18 bg-[linear-gradient(180deg,rgba(214,252,255,0.16),rgba(11,20,30,0.28))]",
+      label: "Night City route",
+      watermark: "2077",
+      activeDot: "border-cyan-100 bg-cyan-100 shadow-[0_0_20px_rgba(130,255,246,0.45)]",
+      secondaryAction: "border-cyan-200/18 bg-[rgba(214,252,255,0.12)] text-cyan-50 hover:bg-[rgba(214,252,255,0.18)]",
+      overlay: "bg-[radial-gradient(circle_at_22%_18%,rgba(120,245,255,0.24),transparent_24%),radial-gradient(circle_at_84%_16%,rgba(255,228,80,0.18),transparent_20%),linear-gradient(118deg,rgba(214,252,255,0.06)_0%,rgba(12,18,27,0.08)_28%,rgba(7,10,16,0.58)_72%,rgba(6,8,14,0.86)_100%)]",
+    }
+  }
+
+  if (family === "witcher") {
+    return {
+      frame: "border-emerald-200/22 shadow-[0_28px_90px_rgba(6,18,14,0.24),0_0_38px_rgba(148,207,178,0.12)]",
+      accentText: "text-emerald-50/90",
+      mutedText: "text-emerald-100/72",
+      chip: "border-emerald-200/20 bg-[rgba(189,233,214,0.14)] text-emerald-50/92",
+      outlineChip: "border-emerald-200/16 bg-[rgba(189,233,214,0.1)] text-emerald-50/84",
+      panel: "border-emerald-100/12 bg-[linear-gradient(180deg,rgba(220,246,234,0.12),rgba(11,20,17,0.26))]",
+      label: "Witcher route",
+      watermark: "WOLF",
+      activeDot: "border-emerald-100 bg-emerald-100 shadow-[0_0_18px_rgba(189,233,214,0.42)]",
+      secondaryAction: "border-emerald-200/18 bg-[rgba(189,233,214,0.12)] text-emerald-50 hover:bg-[rgba(189,233,214,0.18)]",
+      overlay: "bg-[radial-gradient(circle_at_18%_18%,rgba(168,214,191,0.24),transparent_24%),linear-gradient(118deg,rgba(224,241,236,0.08)_0%,rgba(11,16,13,0.08)_28%,rgba(8,12,10,0.56)_72%,rgba(6,8,7,0.86)_100%)]",
+    }
+  }
+
+  if (family === "dark-souls-3") {
+    return {
+      frame: "border-orange-200/22 shadow-[0_28px_90px_rgba(22,10,6,0.24),0_0_40px_rgba(248,136,92,0.14)]",
+      accentText: "text-orange-50/92",
+      mutedText: "text-orange-100/70",
+      chip: "border-orange-200/20 bg-[rgba(255,201,172,0.14)] text-orange-50/92",
+      outlineChip: "border-orange-200/16 bg-[rgba(255,201,172,0.08)] text-orange-50/84",
+      panel: "border-orange-100/12 bg-[linear-gradient(180deg,rgba(255,229,214,0.1),rgba(24,10,8,0.28))]",
+      label: "Ashen route",
+      watermark: "EMBER",
+      activeDot: "border-orange-100 bg-orange-100 shadow-[0_0_18px_rgba(255,178,132,0.44)]",
+      secondaryAction: "border-orange-200/18 bg-[rgba(255,201,172,0.12)] text-orange-50 hover:bg-[rgba(255,201,172,0.18)]",
+      overlay: "bg-[radial-gradient(circle_at_18%_18%,rgba(255,165,119,0.24),transparent_24%),linear-gradient(118deg,rgba(255,232,214,0.06)_0%,rgba(20,10,8,0.08)_28%,rgba(12,7,6,0.6)_72%,rgba(7,5,5,0.88)_100%)]",
+    }
+  }
+
+  if (family === "dark-souls-2") {
+    return {
+      frame: "border-teal-200/22 shadow-[0_28px_90px_rgba(8,16,16,0.24),0_0_36px_rgba(126,178,166,0.14)]",
+      accentText: "text-teal-50/92",
+      mutedText: "text-teal-100/70",
+      chip: "border-teal-200/20 bg-[rgba(180,227,215,0.14)] text-teal-50/92",
+      outlineChip: "border-teal-200/16 bg-[rgba(180,227,215,0.08)] text-teal-50/84",
+      panel: "border-teal-100/12 bg-[linear-gradient(180deg,rgba(228,244,241,0.1),rgba(11,18,17,0.26))]",
+      label: "Drangleic route",
+      watermark: "RUIN",
+      activeDot: "border-teal-100 bg-teal-100 shadow-[0_0_18px_rgba(180,227,215,0.42)]",
+      secondaryAction: "border-teal-200/18 bg-[rgba(180,227,215,0.12)] text-teal-50 hover:bg-[rgba(180,227,215,0.18)]",
+      overlay: "bg-[radial-gradient(circle_at_18%_18%,rgba(153,205,193,0.24),transparent_24%),linear-gradient(118deg,rgba(233,243,239,0.06)_0%,rgba(11,16,16,0.08)_28%,rgba(9,12,12,0.58)_72%,rgba(6,8,8,0.88)_100%)]",
+    }
+  }
+
+  if (family === "lies-of-p") {
+    return {
+      frame: "border-rose-200/22 shadow-[0_28px_90px_rgba(24,10,14,0.24),0_0_36px_rgba(210,147,128,0.14)]",
+      accentText: "text-amber-50/92",
+      mutedText: "text-amber-100/70",
+      chip: "border-rose-200/20 bg-[rgba(239,190,173,0.14)] text-rose-50/92",
+      outlineChip: "border-rose-200/16 bg-[rgba(239,190,173,0.08)] text-rose-50/84",
+      panel: "border-amber-100/12 bg-[linear-gradient(180deg,rgba(255,235,222,0.1),rgba(22,10,14,0.28))]",
+      label: "Puppet route",
+      watermark: "KRAT",
+      activeDot: "border-amber-100 bg-amber-100 shadow-[0_0_18px_rgba(255,210,170,0.44)]",
+      secondaryAction: "border-amber-200/18 bg-[rgba(255,219,191,0.12)] text-amber-50 hover:bg-[rgba(255,219,191,0.18)]",
+      overlay: "bg-[radial-gradient(circle_at_18%_18%,rgba(215,156,136,0.24),transparent_24%),linear-gradient(118deg,rgba(255,236,222,0.06)_0%,rgba(18,10,12,0.08)_28%,rgba(11,7,8,0.58)_72%,rgba(7,5,6,0.88)_100%)]",
+    }
+  }
 
   return {
-    frame: isElden
-      ? "border-amber-200/24 shadow-[0_28px_90px_rgba(28,16,4,0.22),0_0_40px_rgba(198,168,91,0.16)]"
-      : "border-cyan-300/24 shadow-[0_28px_90px_rgba(8,16,28,0.24),0_0_40px_rgba(60,225,255,0.16)]",
-    accentText: isElden ? "text-amber-50/90" : "text-cyan-50/92",
-    mutedText: isElden ? "text-amber-100/72" : "text-cyan-50/76",
-    chip: isElden
-      ? "border-amber-200/22 bg-[rgba(255,244,214,0.16)] text-amber-50/92"
-      : "border-cyan-300/24 bg-[rgba(151,246,255,0.16)] text-cyan-50/92",
-    outlineChip: isElden
-      ? "border-amber-200/18 bg-[rgba(255,248,230,0.1)] text-amber-50/84"
-      : "border-cyan-300/22 bg-[rgba(8,24,33,0.36)] text-cyan-50/84",
-    panel: isElden
-      ? "border-amber-100/14 bg-[linear-gradient(180deg,rgba(255,248,230,0.16),rgba(21,13,8,0.26))]"
-      : "border-cyan-200/18 bg-[linear-gradient(180deg,rgba(214,252,255,0.16),rgba(11,20,30,0.28))]",
-    label: isElden ? "Tarnished route" : "Night City route",
-    watermark: isElden ? "ERDTREE" : "2077",
-    activeDot: isElden
-      ? "border-amber-100 bg-amber-100 shadow-[0_0_18px_rgba(255,220,140,0.45)]"
-      : "border-cyan-100 bg-cyan-100 shadow-[0_0_20px_rgba(130,255,246,0.45)]",
-    secondaryAction: isElden
-      ? "border-amber-100/18 bg-[rgba(255,247,225,0.12)] text-amber-50 hover:bg-[rgba(255,247,225,0.18)]"
-      : "border-cyan-200/18 bg-[rgba(214,252,255,0.12)] text-cyan-50 hover:bg-[rgba(214,252,255,0.18)]",
+    frame: "border-rose-200/22 shadow-[0_28px_90px_rgba(24,10,14,0.24),0_0_36px_rgba(210,147,128,0.14)]",
+    accentText: "text-amber-50/92",
+    mutedText: "text-amber-100/70",
+    chip: "border-rose-200/20 bg-[rgba(239,190,173,0.14)] text-rose-50/92",
+    outlineChip: "border-rose-200/16 bg-[rgba(239,190,173,0.08)] text-rose-50/84",
+    panel: "border-amber-100/12 bg-[linear-gradient(180deg,rgba(255,235,222,0.1),rgba(22,10,14,0.28))]",
+    label: "Puppet route",
+    watermark: "KRAT",
+    activeDot: "border-amber-100 bg-amber-100 shadow-[0_0_18px_rgba(255,210,170,0.44)]",
+    secondaryAction: "border-amber-200/18 bg-[rgba(255,219,191,0.12)] text-amber-50 hover:bg-[rgba(255,219,191,0.18)]",
+    overlay: "bg-[radial-gradient(circle_at_18%_18%,rgba(215,156,136,0.24),transparent_24%),linear-gradient(118deg,rgba(255,236,222,0.06)_0%,rgba(18,10,12,0.08)_28%,rgba(11,7,8,0.58)_72%,rgba(7,5,6,0.88)_100%)]",
   }
 }
 
 function HomeRecommendationTile({ build }: { build: BuildCardView }) {
+  const theme = getGameTheme(build.game.slug)
   const visual = getVisualLanguage(build)
   const metric = getPrimaryMetric(build)
   const artwork = getArtwork(build, "tile")
@@ -129,9 +217,7 @@ function HomeRecommendationTile({ build }: { build: BuildCardView }) {
       <div
         className={cn(
           "absolute inset-0",
-          build.game.slug === "elden-ring"
-            ? "bg-[radial-gradient(circle_at_20%_18%,rgba(255,220,150,0.26),transparent_24%),linear-gradient(118deg,rgba(255,248,225,0.08)_0%,rgba(12,10,8,0.05)_30%,rgba(11,8,5,0.58)_72%,rgba(8,7,6,0.84)_100%)]"
-            : "bg-[radial-gradient(circle_at_22%_18%,rgba(120,245,255,0.24),transparent_24%),radial-gradient(circle_at_84%_16%,rgba(255,228,80,0.18),transparent_20%),linear-gradient(118deg,rgba(214,252,255,0.06)_0%,rgba(12,18,27,0.08)_28%,rgba(7,10,16,0.58)_72%,rgba(6,8,14,0.86)_100%)]",
+          visual.overlay,
         )}
       />
 
@@ -161,9 +247,7 @@ function HomeRecommendationTile({ build }: { build: BuildCardView }) {
             <h3
               className={cn(
                 "max-w-lg text-3xl leading-none text-white",
-                build.game.slug === "cyberpunk-2077"
-                  ? "font-[family-name:var(--font-display-cyber)] uppercase tracking-[0.08em]"
-                  : "font-[family-name:var(--font-display-elden)] tracking-[0.04em]",
+                theme.displayFontClass,
               )}
             >
               {build.name}
@@ -241,7 +325,7 @@ export function HomeLauncher({
   const activeTheme = activeBuild ? getGameTheme(activeBuild.game.slug) : getGameTheme()
   const activeVisual = activeBuild ? getVisualLanguage(activeBuild) : null
   const activeMetric = activeBuild ? getPrimaryMetric(activeBuild) : null
-  const activeArtwork = activeBuild ? getArtwork(activeBuild, "hero") : artworkByGame["elden-ring"]?.hero
+  const activeArtwork = activeBuild ? getArtwork(activeBuild, "hero") : fallbackArtwork.hero
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0d1118] text-white">
@@ -434,9 +518,7 @@ export function HomeLauncher({
                   <div
                     className={cn(
                       "absolute inset-0",
-                      activeBuild.game.slug === "elden-ring"
-                        ? "bg-[radial-gradient(circle_at_18%_18%,rgba(255,222,150,0.34),transparent_26%),linear-gradient(116deg,rgba(255,252,245,0.14)_0%,rgba(22,18,14,0.08)_36%,rgba(10,8,6,0.56)_70%,rgba(7,6,5,0.88)_100%)]"
-                        : "bg-[radial-gradient(circle_at_18%_18%,rgba(126,244,255,0.28),transparent_24%),radial-gradient(circle_at_78%_16%,rgba(255,226,75,0.2),transparent_18%),linear-gradient(116deg,rgba(214,252,255,0.12)_0%,rgba(10,18,28,0.08)_36%,rgba(7,11,16,0.58)_72%,rgba(6,8,14,0.88)_100%)]",
+                      activeVisual?.overlay,
                     )}
                   />
                   <div className="pointer-events-none absolute inset-0">
@@ -444,7 +526,7 @@ export function HomeLauncher({
                       className={cn(
                         "absolute left-[8%] top-[9%] text-[5.5rem] opacity-[0.07] sm:text-[8rem] lg:text-[9.5rem]",
                         activeTheme.displayFontClass,
-                        activeBuild.game.slug === "elden-ring" ? "text-amber-50" : "text-cyan-50",
+                        activeVisual?.accentText,
                       )}
                     >
                       {activeVisual?.watermark}

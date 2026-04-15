@@ -260,4 +260,219 @@
       0 0 0 1px rgba(255, 234, 0, 0.3),
       0 20px 70px rgba(255, 219, 29, 0.22);
   }
+
+  .witcher-shell,
+  .witcher-panel,
+  .witcher-card,
+  .ds3-shell,
+  .ds3-panel,
+  .ds3-card,
+  .ds2-shell,
+  .ds2-panel,
+  .ds2-card,
+  .lies-shell,
+  .lies-panel,
+  .lies-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .witcher-panel::before,
+  .ds3-panel::before,
+  .ds2-panel::before,
+  .lies-panel::before,
+  .witcher-card::before,
+  .ds3-card::before,
+  .ds2-card::before,
+  .lies-card::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .witcher-panel::after,
+  .witcher-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top left, rgba(176, 207, 197, 0.1), transparent 34%),
+      linear-gradient(180deg, rgba(209, 223, 218, 0.05), transparent 28%);
+    pointer-events: none;
+  }
+
+  .witcher-button-primary {
+    background: linear-gradient(180deg, rgba(122, 146, 139, 0.92), rgba(55, 71, 68, 0.96));
+    box-shadow:
+      0 10px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(240, 246, 244, 0.08);
+  }
+
+  .witcher-button-secondary {
+    background: rgba(161, 189, 183, 0.08);
+    border: 1px solid rgba(161, 189, 183, 0.18);
+    box-shadow: inset 0 1px 0 rgba(240, 246, 244, 0.04);
+  }
+
+  .witcher-note {
+    background:
+      linear-gradient(180deg, rgba(14, 20, 21, 0.92), rgba(8, 11, 12, 0.96));
+    border: 1px solid rgba(173, 196, 190, 0.16);
+    box-shadow:
+      0 18px 60px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(240, 246, 244, 0.04);
+  }
+
+  .witcher-sigil {
+    background: rgba(163, 191, 183, 0.07);
+    box-shadow: inset 0 1px 0 rgba(240, 246, 244, 0.04);
+  }
+
+  .witcher-fog {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(224, 240, 235, 0.08), transparent 22%),
+      radial-gradient(circle at 80% 20%, rgba(143, 174, 165, 0.1), transparent 26%),
+      linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.24) 100%);
+  }
+
+  .ds3-panel::after,
+  .ds3-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top left, rgba(255, 169, 122, 0.12), transparent 34%),
+      linear-gradient(180deg, rgba(247, 125, 76, 0.05), transparent 28%);
+    pointer-events: none;
+  }
+
+  .ds3-button-primary {
+    background: linear-gradient(180deg, rgba(145, 74, 44, 0.94), rgba(73, 33, 19, 0.96));
+    box-shadow:
+      0 10px 32px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 227, 205, 0.08);
+  }
+
+  .ds3-button-secondary {
+    background: rgba(247, 125, 76, 0.08);
+    border: 1px solid rgba(247, 125, 76, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 227, 205, 0.04);
+  }
+
+  .ds3-plate {
+    background:
+      linear-gradient(180deg, rgba(22, 14, 11, 0.92), rgba(8, 5, 5, 0.96));
+    border: 1px solid rgba(247, 125, 76, 0.16);
+    box-shadow:
+      0 18px 64px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 227, 205, 0.04);
+  }
+
+  .ds3-embers {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255, 177, 102, 0.08), transparent 22%),
+      radial-gradient(circle at 70% 20%, rgba(247, 125, 76, 0.1), transparent 24%),
+      linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.28) 100%);
+  }
+
+  .ds3-callout {
+    background: linear-gradient(180deg, rgba(28, 15, 10, 0.88), rgba(10, 6, 5, 0.94));
+    border-left: 1px solid rgba(247, 125, 76, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 227, 205, 0.04);
+  }
+
+  .ds2-panel::after,
+  .ds2-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top left, rgba(152, 190, 177, 0.1), transparent 34%),
+      linear-gradient(180deg, rgba(116, 153, 145, 0.05), transparent 28%);
+    pointer-events: none;
+  }
+
+  .ds2-button-primary {
+    background: linear-gradient(180deg, rgba(105, 123, 117, 0.94), rgba(49, 60, 57, 0.96));
+    box-shadow:
+      0 10px 32px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(240, 244, 242, 0.08);
+  }
+
+  .ds2-button-secondary {
+    background: rgba(116, 153, 145, 0.08);
+    border: 1px solid rgba(116, 153, 145, 0.18);
+    box-shadow: inset 0 1px 0 rgba(240, 244, 242, 0.04);
+  }
+
+  .ds2-plate {
+    background:
+      linear-gradient(180deg, rgba(13, 18, 19, 0.92), rgba(6, 8, 9, 0.96));
+    border: 1px solid rgba(116, 153, 145, 0.16);
+    box-shadow:
+      0 18px 64px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(240, 244, 242, 0.04);
+  }
+
+  .ds2-mist {
+    background:
+      radial-gradient(circle at 24% 28%, rgba(193, 214, 207, 0.08), transparent 24%),
+      radial-gradient(circle at 74% 20%, rgba(116, 153, 145, 0.08), transparent 26%),
+      linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.24) 100%);
+  }
+
+  .ds2-callout {
+    background: linear-gradient(180deg, rgba(16, 20, 21, 0.88), rgba(7, 9, 10, 0.94));
+    border-left: 1px solid rgba(116, 153, 145, 0.22);
+    box-shadow: inset 0 1px 0 rgba(240, 244, 242, 0.04);
+  }
+
+  .lies-panel::after,
+  .lies-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top left, rgba(223, 171, 145, 0.12), transparent 34%),
+      linear-gradient(180deg, rgba(198, 129, 108, 0.06), transparent 28%);
+    pointer-events: none;
+  }
+
+  .lies-button-primary {
+    background: linear-gradient(180deg, rgba(148, 85, 69, 0.94), rgba(82, 38, 47, 0.96));
+    box-shadow:
+      0 10px 32px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 227, 214, 0.08);
+  }
+
+  .lies-button-secondary {
+    background: rgba(198, 129, 108, 0.08);
+    border: 1px solid rgba(198, 129, 108, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 227, 214, 0.04);
+  }
+
+  .lies-plate {
+    background:
+      linear-gradient(180deg, rgba(23, 11, 15, 0.92), rgba(9, 5, 7, 0.96));
+    border: 1px solid rgba(198, 129, 108, 0.16);
+    box-shadow:
+      0 18px 64px rgba(0, 0, 0, 0.34),
+      inset 0 1px 0 rgba(255, 227, 214, 0.04);
+  }
+
+  .lies-filagree {
+    background:
+      radial-gradient(circle at 22% 24%, rgba(255, 226, 208, 0.06), transparent 20%),
+      radial-gradient(circle at 76% 18%, rgba(198, 129, 108, 0.1), transparent 24%),
+      linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.26) 100%);
+  }
+
+  .lies-callout {
+    background: linear-gradient(180deg, rgba(26, 12, 16, 0.88), rgba(10, 6, 8, 0.94));
+    border-left: 1px solid rgba(198, 129, 108, 0.22);
+    box-shadow: inset 0 1px 0 rgba(255, 227, 214, 0.04);
+  }
 }

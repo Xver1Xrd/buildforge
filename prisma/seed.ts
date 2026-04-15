@@ -3,11 +3,24 @@ import "dotenv/config";
 import { PrismaClient, StatCategory } from "@prisma/client";
 
 import { cyberpunkBuildSeeds } from "./seeds/cyberpunk-2077";
+import { darkSouls2BuildSeeds } from "./seeds/dark-souls-2";
+import { darkSouls3BuildSeeds } from "./seeds/dark-souls-3";
 import { eldenRingBuildSeeds } from "./seeds/elden-ring";
 import { gameSeeds } from "./seeds/games";
+import { liesOfPBuildSeeds } from "./seeds/lies-of-p";
 import { tagSeeds } from "./seeds/tags";
+import { witcher3BuildSeeds } from "./seeds/witcher-3";
 
 const prisma = new PrismaClient();
+
+const buildSeedRegistry = {
+  "elden-ring": eldenRingBuildSeeds,
+  "cyberpunk-2077": cyberpunkBuildSeeds,
+  "witcher-3": witcher3BuildSeeds,
+  "dark-souls-3": darkSouls3BuildSeeds,
+  "dark-souls-2": darkSouls2BuildSeeds,
+  "lies-of-p": liesOfPBuildSeeds,
+} as const;
 
 async function main() {
   await prisma.buildAlternative.deleteMany();
@@ -38,10 +51,7 @@ async function main() {
   );
   const buildIdMap = new Map<string, number>();
 
-  for (const [gameSlug, builds] of [
-    ["elden-ring", eldenRingBuildSeeds],
-    ["cyberpunk-2077", cyberpunkBuildSeeds],
-  ] as const) {
+  for (const [gameSlug, builds] of Object.entries(buildSeedRegistry)) {
     const gameId = gameMap.get(gameSlug);
 
     if (!gameId) {
@@ -128,7 +138,9 @@ async function main() {
     }
   }
 
-  const alternatives = [...eldenRingBuildSeeds, ...cyberpunkBuildSeeds].flatMap(
+  const allBuildSeeds = Object.values(buildSeedRegistry).flat();
+
+  const alternatives = allBuildSeeds.flatMap(
     (build) =>
       build.alternatives
         .map((alternative) => ({
@@ -152,7 +164,7 @@ async function main() {
   await prisma.buildAlternative.createMany({ data: alternatives });
 
   const buildCount = await prisma.build.count();
-  console.log(`Seeded BuildForge with ${buildCount} builds across 2 games.`);
+  console.log(`Seeded BuildForge with ${buildCount} builds across ${Object.keys(buildSeedRegistry).length} games.`);
 }
 
 main()

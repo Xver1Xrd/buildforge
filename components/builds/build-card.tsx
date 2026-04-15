@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { gameProfiles } from "@/lib/config/games"
 import { getGameTheme, type ThemeFamily } from "@/lib/data/themes"
 import { getDifficultyLabel } from "@/lib/presentation"
 import { cn } from "@/lib/utils"
@@ -138,19 +139,10 @@ function getSelectedCompareClass(family: ThemeFamily) {
 }
 
 function getMetricSet(build: BuildCardView) {
-  if (build.game.slug === "elden-ring") {
-    return [
-      { label: "PvE", value: build.ratings.pve },
-      { label: "PvP", value: build.ratings.pvp },
-      { label: "Burst", value: build.ratings.burst },
-    ]
-  }
-
-  return [
-    { label: "Stealth", value: build.ratings.stealth },
-    { label: "Hacking", value: build.ratings.hacking },
-    { label: "Burst", value: build.ratings.burst },
-  ]
+  return gameProfiles[build.game.slug].headlineMetrics.map((metric) => ({
+    label: metric.label,
+    value: build.ratings[metric.ratingKey],
+  }))
 }
 
 export function BuildCard({

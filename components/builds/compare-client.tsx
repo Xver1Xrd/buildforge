@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation"
 
 import { ThemeFrame } from "@/components/builds/theme-frame"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { supportedGameProfiles } from "@/lib/config/games"
 import { getGameTheme } from "@/lib/data/themes"
-import { getDifficultyLabel, isCyberpunkSlug } from "@/lib/presentation"
+import { getDifficultyLabel } from "@/lib/presentation"
 import { cn } from "@/lib/utils"
 import type { BuildCardView, BuildDetailView } from "@/types/builds"
 
@@ -39,14 +40,24 @@ function buildKeyDifferences(builds: BuildDetailView[]) {
 }
 
 function summarizeGear(build: BuildDetailView) {
-  if (build.game.slug === "elden-ring") {
+  if (build.weapons.length >= 2) {
     return build.weapons.slice(0, 2).map((item) => item.name).join(" + ")
+  }
+
+  if (build.operatingSystems.length) {
+    return [
+      ...build.weapons.slice(0, 1).map((item) => item.name),
+      ...build.operatingSystems.slice(0, 1).map((item) => item.name),
+    ].join(" + ")
   }
 
   return [
     ...build.weapons.slice(0, 1).map((item) => item.name),
-    ...build.operatingSystems.slice(0, 1).map((item) => item.name),
-  ].join(" + ")
+    build.signature.loadout,
+  ]
+    .filter(Boolean)
+    .slice(0, 2)
+    .join(" + ")
 }
 
 export function CompareClient({
@@ -66,8 +77,7 @@ export function CompareClient({
       ? selectedBuilds[0]?.game.slug
       : undefined
   const theme = getGameTheme(comparisonTheme)
-  const isCyberpunk = isCyberpunkSlug(comparisonTheme)
-  const isElden = comparisonTheme === "elden-ring"
+  const family = theme.family
 
   function syncSelection(nextSelection: string[]) {
     setSelectedSlugs(nextSelection)
@@ -95,23 +105,19 @@ export function CompareClient({
     syncSelection([...selectedSlugs, buildSlug])
   }
 
-  const groupedBuilds = [
-    {
-      label: "Elden Ring",
-      items: allBuilds.filter((build) => build.game.slug === "elden-ring"),
-    },
-    {
-      label: "Cyberpunk 2077",
-      items: allBuilds.filter((build) => build.game.slug === "cyberpunk-2077"),
-    },
-  ]
+  const groupedBuilds = supportedGameProfiles
+    .map((profile) => ({
+      label: profile.name,
+      items: allBuilds.filter((build) => build.game.slug === profile.slug),
+    }))
+    .filter((group) => group.items.length > 0)
 
   if (selectedBuilds.length < 2) {
     return (
       <div className="space-y-6">
         <ThemeFrame
           themeSlug={comparisonTheme}
-          className={cn(isCyberpunk ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
+          className={cn(family === "cyberpunk" ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
         >
           <div className="px-5 py-6 sm:px-6">
             <p className="text-xs uppercase tracking-[0.28em] text-slate-500">
@@ -154,7 +160,7 @@ export function CompareClient({
     <div className="space-y-6">
       <ThemeFrame
         themeSlug={comparisonTheme}
-        className={cn(isCyberpunk ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
+        className={cn(family === "cyberpunk" ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
       >
         <div className="space-y-4 px-5 py-6 sm:px-6">
           <div className="flex flex-wrap gap-2">
@@ -165,7 +171,7 @@ export function CompareClient({
                 onClick={() => toggleBuild(build.slug)}
                 className={cn(
                   "border px-3 py-1.5 text-xs uppercase tracking-[0.18em]",
-                  isElden ? "rounded-sm" : "rounded-full",
+                  family === "cyberpunk" ? "rounded-none" : family === "lies-of-p" ? "rounded-[10px]" : "rounded-sm",
                   theme.badgeClass,
                 )}
               >
@@ -179,10 +185,18 @@ export function CompareClient({
                 key={bullet}
                 className={cn(
                   "border px-4 py-3 text-sm leading-6 text-slate-200/82",
-                  isCyberpunk
+                  family === "cyberpunk"
                     ? "cyber-cut-sm rounded-none border-cyan-300/18 bg-black"
-                    : isElden
+                    : family === "elden"
                       ? "rounded-[22px] border-amber-200/14 bg-[rgba(14,10,8,0.78)]"
+                      : family === "witcher"
+                        ? "rounded-[22px] border-slate-200/14 bg-[rgba(13,18,20,0.82)]"
+                        : family === "dark-souls-3"
+                          ? "rounded-[20px] border-orange-200/14 bg-[rgba(18,11,9,0.82)]"
+                          : family === "dark-souls-2"
+                            ? "rounded-[20px] border-teal-100/14 bg-[rgba(10,14,15,0.82)]"
+                            : family === "lies-of-p"
+                              ? "rounded-[22px] border-rose-200/14 bg-[rgba(18,9,12,0.84)]"
                       : "rounded-2xl border-white/10 bg-black/20",
                 )}
               >
@@ -201,7 +215,7 @@ export function CompareClient({
 
       <ThemeFrame
         themeSlug={comparisonTheme}
-        className={cn(isCyberpunk ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
+        className={cn(family === "cyberpunk" ? "cyber-cut-md rounded-none" : "rounded-[30px]")}
       >
         <div className="px-5 py-5 sm:px-6">
           <Table className="min-w-[860px]">

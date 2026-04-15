@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // External tooling bundle not shipped as part of the app.
+    "claude-code-lsp-enforcement-kit/**",
   ]),
 ]);
 

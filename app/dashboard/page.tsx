@@ -10,7 +10,7 @@ export default async function DashboardPage() {
     <PageShell
       eyebrow="Dashboard"
       title="BuildForge analytics"
-      subtitle="Use build distributions, tag weight, and average combat profiles to understand how the catalog is shaped across both supported games."
+      subtitle="Use build distributions, tag weight, and average combat profiles to understand how the catalog is shaped across the full supported lineup."
     >
       <StatsSummary data={data} />
       <DashboardChartsShell data={data} />

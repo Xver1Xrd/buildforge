@@ -76,8 +76,6 @@ export const advisorGameConfig: Record<AdvisorGameSlug, AdvisorGameConfig> = {
       { value: "sign-gryphon", label: "Signs and Gryphon routing", hint: "Lean on sign intensity, control, and safer setups." },
       { value: "fast-attack-cat", label: "Fast attack Cat School", hint: "Whirl, crit chains, and evasive melee tempo." },
       { value: "heavy-bear", label: "Heavy Bear School", hint: "Quen-backed defense with punishing heavy trades." },
-      { value: "euphoria-hybrid", label: "Euphoria hybrid", hint: "Blend alchemy spikes with signs and sword finishers." },
-      { value: "bomb-control", label: "Bomb control", hint: "Dominate packs with bombs, crowd tools, and setup value." },
     ],
     focuses: [
       { value: "MONSTER_HUNTER", label: "Monster hunting", hint: "Prepared routes for contracts, oils, and sustain." },
@@ -99,10 +97,8 @@ export const advisorGameConfig: Record<AdvisorGameSlug, AdvisorGameConfig> = {
     styles: [
       { value: "strength-ultra", label: "Strength ultra weapons", hint: "Poise trades, stagger, and heavy punish windows." },
       { value: "dex-weapon-art", label: "Dexterity and weapon arts", hint: "Fast spacing, sharp whiff punishes, and roll catches." },
-      { value: "quality-knight", label: "Quality knight", hint: "Balanced melee routing with broad weapon coverage." },
       { value: "pyromancer", label: "Pyromancer", hint: "Chaos damage, mixups, and explosive ranged pressure." },
       { value: "faith-lightning", label: "Faith and lightning", hint: "Miracles, buffs, and high-value spear punishes." },
-      { value: "dark-bleed", label: "Dark and bleed", hint: "Pressure through status buildup and flexible dark scaling." },
     ],
     focuses: [
       { value: "PVE", label: "PvE", hint: "Optimized for area routing and major boss fights." },
@@ -125,8 +121,6 @@ export const advisorGameConfig: Record<AdvisorGameSlug, AdvisorGameConfig> = {
       { value: "hexer", label: "Hexer", hint: "Dark orb control, utility, and versatile ranged answers." },
       { value: "greatshield-sentinel", label: "Greatshield sentinel", hint: "Measured pacing with sturdy defense and safe clears." },
       { value: "rapier-duelist", label: "Rapier duelist", hint: "High counter-hit value with precise stamina management." },
-      { value: "quality-drangleic", label: "Quality Drangleic knight", hint: "A broad toolkit for a long PvE campaign." },
-      { value: "sorcerer-scholar", label: "Sorcerer scholar", hint: "Soul Spear routing, utility, and safe ranged pressure." },
     ],
     focuses: [
       { value: "PVE", label: "PvE", hint: "Prioritize stable progression, zones, and bosses." },
@@ -148,9 +142,7 @@ export const advisorGameConfig: Record<AdvisorGameSlug, AdvisorGameConfig> = {
       { value: "motivity-greatblade", label: "Motivity greatblade", hint: "Heavy blades, big stagger, and decisive punish windows." },
       { value: "technique-dancer", label: "Technique dancer", hint: "Quick handles, evasive pressure, and constant tempo." },
       { value: "advance-alchemist", label: "Advance alchemist", hint: "Elemental grindstone routing and status-heavy setups." },
-      { value: "perfect-guard", label: "Perfect-guard specialist", hint: "Win through clean deflects and break opportunities." },
       { value: "legion-aegis", label: "Legion Aegis", hint: "Defensive legion arm play with stable counter-pressure." },
-      { value: "balanced-puppet", label: "Balanced puppet hunter", hint: "A flexible route with stagger and tool variety." },
     ],
     focuses: [
       { value: "BOSSING", label: "Bossing", hint: "Prioritize elite and boss consistency first." },

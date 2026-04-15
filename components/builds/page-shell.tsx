@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { supportedGameProfiles } from "@/lib/config/games"
 import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { getGameTheme, type ThemeFamily } from "@/lib/data/themes"
@@ -15,10 +16,10 @@ const navLinks = [
   { href: "/dashboard", label: "Dashboard" },
 ]
 
-const gameLinks = [
-  { href: "/games/elden-ring", label: "Elden Ring" },
-  { href: "/games/cyberpunk-2077", label: "Cyberpunk 2077" },
-]
+const gameLinks = supportedGameProfiles.map((profile) => ({
+  href: `/games/${profile.slug}`,
+  label: profile.navLabel,
+}))
 
 function getShellBackdropClass(family: ThemeFamily) {
   switch (family) {

@@ -247,8 +247,8 @@ describe("recommendBuilds", () => {
     const pool: AdvisorBuildView[] = [
       makeBuild(
         {
-          slug: "gryphon-sign-weaver",
-          name: "Gryphon Sign Weaver",
+          slug: "griffin-sign-architect",
+          name: "Griffin Sign Architect",
           primaryArchetype: "Signs Gryphon",
           difficulty: "INTERMEDIATE",
           combatStyle: "SPELLCASTER",
@@ -262,7 +262,7 @@ describe("recommendBuilds", () => {
             pve: 9,
             pvp: 0,
           },
-          tags: buildTags(["signs", "caster", "crowd-control", "support-buffs"]),
+          tags: buildTags(["signs", "spellcaster", "crowd-control", "support-buffs"]),
         },
         "witcher-3",
       ),
@@ -302,7 +302,7 @@ describe("recommendBuilds", () => {
             pve: 9,
             pvp: 0,
           },
-          tags: buildTags(["tank", "sustain", "signs", "monster-hunter"]),
+          tags: buildTags(["tank", "sustain", "signs", "beginner-friendly"]),
         },
         "witcher-3",
       ),
@@ -319,7 +319,7 @@ describe("recommendBuilds", () => {
       pool,
     );
 
-    expect(result.winner.build.slug).toBe("gryphon-sign-weaver");
+    expect(result.winner.build.slug).toBe("griffin-sign-architect");
     expect(result.winner.breakdown.style).toBeGreaterThan(0);
   });
 
@@ -327,8 +327,8 @@ describe("recommendBuilds", () => {
     const pool: AdvisorBuildView[] = [
       makeBuild(
         {
-          slug: "lothric-ultra-knight",
-          name: "Lothric Ultra Knight",
+          slug: "cathedral-crusher",
+          name: "Cathedral Crusher",
           primaryArchetype: "Strength Ultra",
           difficulty: "BEGINNER",
           ratings: {
@@ -341,13 +341,13 @@ describe("recommendBuilds", () => {
             pve: 10,
             pvp: 6,
           },
-          tags: buildTags(["melee", "tank", "boss-burst", "poise", "pve"]),
+          tags: buildTags(["strength", "ultra-greatsword", "stagger", "tank", "pve"]),
         },
         "dark-souls-3",
       ),
       makeBuild(
         {
-          slug: "sellsword-weapon-master",
+          slug: "sellsword-twinblade-ace",
           name: "Sellsword Weapon Master",
           primaryArchetype: "Dex Weapon Art",
           difficulty: "ADVANCED",
@@ -361,13 +361,13 @@ describe("recommendBuilds", () => {
             pve: 8,
             pvp: 9,
           },
-          tags: buildTags(["weapon-arts", "mobility", "precision", "pvp"]),
+          tags: buildTags(["dexterity", "twinblades", "mobility", "precision", "pvp"]),
         },
         "dark-souls-3",
       ),
       makeBuild(
         {
-          slug: "chaos-pyromancer",
+          slug: "chaos-pyromancer-lord",
           name: "Chaos Pyromancer",
           primaryArchetype: "Pyromancer",
           difficulty: "INTERMEDIATE",
@@ -399,15 +399,15 @@ describe("recommendBuilds", () => {
       pool,
     );
 
-    expect(result.winner.build.slug).toBe("lothric-ultra-knight");
+    expect(result.winner.build.slug).toBe("cathedral-crusher");
   });
 
   it("recommends the DS2 hexer for a utility-heavy hybrid player", () => {
     const pool: AdvisorBuildView[] = [
       makeBuild(
         {
-          slug: "black-gulch-hexer",
-          name: "Black Gulch Hexer",
+          slug: "sunset-hexer-scholar",
+          name: "Sunset Hexer Scholar",
           primaryArchetype: "Hexer",
           difficulty: "INTERMEDIATE",
           combatStyle: "SPELLCASTER",
@@ -421,13 +421,13 @@ describe("recommendBuilds", () => {
             pve: 8,
             pvp: 8,
           },
-          tags: buildTags(["hexes", "dark-magic", "support-buffs", "precision"]),
+          tags: buildTags(["hexes", "dark", "support-buffs", "precision"]),
         },
         "dark-souls-2",
       ),
       makeBuild(
         {
-          slug: "iron-keep-sentinel",
+          slug: "drangleic-stonewall",
           name: "Iron Keep Sentinel",
           primaryArchetype: "Greatshield Sentinel",
           difficulty: "BEGINNER",
@@ -447,7 +447,7 @@ describe("recommendBuilds", () => {
       ),
       makeBuild(
         {
-          slug: "drangleic-power-stancer",
+          slug: "powerstance-raider",
           name: "Drangleic Power Stancer",
           primaryArchetype: "Power Stance",
           difficulty: "ADVANCED",
@@ -478,7 +478,7 @@ describe("recommendBuilds", () => {
       pool,
     );
 
-    expect(result.winner.build.slug).toBe("black-gulch-hexer");
+    expect(result.winner.build.slug).toBe("sunset-hexer-scholar");
     expect(result.alternatives).toHaveLength(2);
   });
 
@@ -486,27 +486,27 @@ describe("recommendBuilds", () => {
     const pool: AdvisorBuildView[] = [
       makeBuild(
         {
-          slug: "perfect-guard-duelist",
-          name: "Perfect Guard Duelist",
-          primaryArchetype: "Perfect Guard",
-          difficulty: "ADVANCED",
+          slug: "aegis-perfect-guard-warden",
+          name: "Aegis Perfect Guard Warden",
+          primaryArchetype: "Legion Aegis",
+          difficulty: "INTERMEDIATE",
           ratings: {
             stealth: 0,
             hacking: 0,
-            mobility: 7,
-            survivability: 7,
-            burst: 8,
+            mobility: 4,
+            survivability: 9,
+            burst: 6,
             utility: 10,
             pve: 9,
             pvp: 0,
           },
-          tags: buildTags(["perfect-guard", "precision", "stagger", "guard-break"]),
+          tags: buildTags(["perfect-guard", "tank", "legion-arm", "sustain", "stagger"]),
         },
         "lies-of-p",
       ),
       makeBuild(
         {
-          slug: "krat-ark-greatblade",
+          slug: "motivity-puppet-axe-bruiser",
           name: "Krat Ark Greatblade",
           primaryArchetype: "Motivity Greatblade",
           difficulty: "BEGINNER",
@@ -526,21 +526,21 @@ describe("recommendBuilds", () => {
       ),
       makeBuild(
         {
-          slug: "aegis-legionnaire",
-          name: "Aegis Legionnaire",
-          primaryArchetype: "Legion Aegis",
-          difficulty: "INTERMEDIATE",
+          slug: "technique-two-dragons-maestro",
+          name: "Technique Two Dragons Maestro",
+          primaryArchetype: "Technique Dancer",
+          difficulty: "ADVANCED",
           ratings: {
             stealth: 0,
             hacking: 0,
-            mobility: 4,
-            survivability: 9,
-            burst: 6,
+            mobility: 9,
+            survivability: 5,
+            burst: 8,
             utility: 9,
             pve: 8,
             pvp: 0,
           },
-          tags: buildTags(["legion-arms", "tank", "sustain", "utility"]),
+          tags: buildTags(["technique", "mobility", "precision", "perfect-guard"]),
         },
         "lies-of-p",
       ),
@@ -549,7 +549,7 @@ describe("recommendBuilds", () => {
     const result = recommendBuilds(
       {
         gameSlug: "lies-of-p",
-        style: "perfect-guard",
+        style: "legion-aegis",
         difficulty: "ADVANCED",
         focus: "PARRY",
         preferences: ["perfect-guard", "stagger"],
@@ -557,7 +557,7 @@ describe("recommendBuilds", () => {
       pool,
     );
 
-    expect(result.winner.build.slug).toBe("perfect-guard-duelist");
-    expect(result.winner.reasons[0]).toContain("Perfect Guard Duelist");
+    expect(result.winner.build.slug).toBe("aegis-perfect-guard-warden");
+    expect(result.winner.reasons[0]).toContain("Aegis Perfect Guard Warden");
   });
 });
