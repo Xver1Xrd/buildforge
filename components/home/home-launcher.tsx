@@ -241,7 +241,7 @@ export function HomeLauncher({
   const activeTheme = activeBuild ? getGameTheme(activeBuild.game.slug) : getGameTheme()
   const activeVisual = activeBuild ? getVisualLanguage(activeBuild) : null
   const activeMetric = activeBuild ? getPrimaryMetric(activeBuild) : null
-  const activeArtwork = activeBuild ? getArtwork(activeBuild, "hero") : artworkByGame["elden-ring"].hero
+  const activeArtwork = activeBuild ? getArtwork(activeBuild, "hero") : artworkByGame["elden-ring"]?.hero
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0d1118] text-white">
